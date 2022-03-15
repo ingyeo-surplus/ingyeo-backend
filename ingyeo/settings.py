@@ -25,7 +25,10 @@ SECRET_KEY = '!!4i0rtx#y&o^($vy1d82v9iq@i)0hgtr7u^v!22yn2w1h(st+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -37,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +56,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ingyeo.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 TEMPLATES = [
     {
