@@ -40,8 +40,6 @@ class UserViewSet(viewsets.GenericViewSet):
         user_id = request.data.get('user_id')
         password = request.data.get('password')
 
-        print(f'user_id : {user_id}, password : {password}\n')
-
         user = authenticate(request, user_id=user_id, password=password)
         if user:
             login(request, user)
