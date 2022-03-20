@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
@@ -30,16 +30,17 @@ class UserViewSet(viewsets.GenericViewSet):
             return Response({"error": "user_id or username already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
         login(request, user)
-        token, created = Token.objects.get_or_create(user=user)
 
         data = UserSerializer(user).data
-        data['token'] = token.key
+        data['token'] = user.auth_token.key
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['POST'])
     def login(self, request):
         user_id = request.data.get('user_id')
         password = request.data.get('password')
+
+        print(f'user_id : {user_id}, password : {password}\n')
 
         user = authenticate(request, user_id=user_id, password=password)
         if user:
@@ -50,7 +51,7 @@ class UserViewSet(viewsets.GenericViewSet):
             data['token'] = token.key
             return Response(data, status=status.HTTP_200_OK)
 
-        return Response({"error": "Wrong username or wrong password"}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"error": "Wrong user_id or wrong password"}, status=status.HTTP_403_FORBIDDEN)
 
     @action(detail=False, methods=['DELETE'])
     def logout(self, request):

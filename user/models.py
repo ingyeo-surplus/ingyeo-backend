@@ -20,4 +20,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f'User ${self.user_id}'
+        return f'User {self.user_id}'
